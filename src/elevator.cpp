@@ -31,8 +31,8 @@ int main() {
             
             // Find next floor based on current direction
             if (going_up) {
-                // Look for requests at or above current floor
-                auto it = requests.lower_bound(current_floor);
+                // Look for requests above current floor
+                auto it = requests.upper_bound(current_floor);
                 if (it != requests.end()) {
                     next_floor = *it;
                 } else {
@@ -41,8 +41,8 @@ int main() {
                     next_floor = *requests.rbegin();
                 }
             } else {
-                // Going down, look for requests at or below current floor
-                auto it = requests.upper_bound(current_floor);
+                // Going down, look for requests below current floor
+                auto it = requests.lower_bound(current_floor);
                 if (it != requests.begin()) {
                     --it;
                     next_floor = *it;
