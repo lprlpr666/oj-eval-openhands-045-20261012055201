@@ -36,9 +36,16 @@ int main() {
                 if (it != requests.end()) {
                     next_floor = *it;
                 } else {
-                    // No requests above, reverse direction
+                    // No requests above, reverse direction and find nearest below
                     going_up = false;
-                    next_floor = *requests.rbegin();
+                    auto it2 = requests.lower_bound(current_floor);
+                    if (it2 != requests.begin()) {
+                        --it2;
+                        next_floor = *it2;
+                    } else {
+                        // This shouldn't happen as requests is not empty
+                        next_floor = *requests.rbegin();
+                    }
                 }
             } else {
                 // Going down, look for requests below current floor
@@ -47,9 +54,15 @@ int main() {
                     --it;
                     next_floor = *it;
                 } else {
-                    // No requests below, reverse direction
+                    // No requests below, reverse direction and find nearest above
                     going_up = true;
-                    next_floor = *requests.begin();
+                    auto it2 = requests.upper_bound(current_floor);
+                    if (it2 != requests.end()) {
+                        next_floor = *it2;
+                    } else {
+                        // This shouldn't happen as requests is not empty
+                        next_floor = *requests.begin();
+                    }
                 }
             }
             
